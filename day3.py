@@ -1,9 +1,9 @@
 import re
+import sys
 
 text = ""
-with open("day3_input.txt", "r") as file:
-    for line in file:
-        text += line
+for line in sys.stdin.read():
+    text += line
 
 mul_pattern = r"mul\((\d+),(\d+)\)"
 do_pattern = r"do\(\)"

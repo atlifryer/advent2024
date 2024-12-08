@@ -1,3 +1,6 @@
+import sys
+
+
 def main():
     def is_line_safe(line):
         increasing = False
@@ -17,10 +20,9 @@ def main():
 
     lines = []
 
-    with open("day2_input.txt", "r") as file:
-        for line in file:
-            numbers = list(map(int, line.split()))
-            lines.append(numbers)
+    for line in sys.stdin.read().splitlines():
+        numbers = list(map(int, line.split()))
+        lines.append(numbers)
 
     unsafe_lines = [line[:] for line in lines]
 
@@ -28,7 +30,6 @@ def main():
 
     for line in lines:
         if is_line_safe(line):
-            print(line)
             unsafe_lines.remove(line)
             safe_reports += 1
 

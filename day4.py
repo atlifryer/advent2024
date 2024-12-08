@@ -1,5 +1,9 @@
-with open("day4_input.txt", "r") as file:
-    text = [list(line.strip()) for line in file if line.strip()]
+import sys
+
+
+text = [
+    list(line.strip()) for line in sys.stdin.read().strip().split("\n") if line.strip()
+]
 
 
 def check_pattern(grid, pattern):
