@@ -66,59 +66,53 @@ print()
 
 
 # part 2
-def group_memory(mem2):
-    grouped = []
-    i = 0
-    while i < len(mem2):
-        if mem2[i] == ".":
-            start = i
-            while i < len(mem2) and mem2[i] == ".":
-                i += 1
-            grouped.append(["."] * (i - start))
-        else:
-            start = i
-            file_id = mem2[i]
-            while i < len(mem2) and mem2[i] == file_id:
-                i += 1
-            grouped.append([file_id] * (i - start))
-    return grouped
 
 
-def defragment_memory(grouped):
-    for i in range(len(grouped) - 1, -1, -1):
-        if not isinstance(grouped[i][0], int):
+# þettta shit er svona 70% chatgpt addled cringe code
+# eg var bara kominn með nóg af þessu rusli
+def initialize_blocks(content):
+    files, spaces = [], []
+    pos = 0
+
+    for i, char in enumerate(content):
+        if char == "\n":
             continue
+        block_size = int(char)
+        if i % 2 == 0:
+            files.append(list(range(pos, pos + block_size)))
+            pos += block_size
+        else:
+            spaces.append(list(range(pos, pos + block_size)))
+            pos += block_size
 
-        file_group = grouped[i][:]
-        file_size = len(file_group)
-
-        for j in range(i):
-            if grouped[j][0] == ".":
-                free_size = len(grouped[j])
-
-                if free_size == file_size:
-                    grouped[j] = file_group[:]
-                    grouped[i] = ["." for _ in range(file_size)]
-
-                    break
-
-                elif free_size > file_size:
-                    grouped[j] = file_group[:]
-                    grouped[i] = ["." for _ in range(file_size)]
-
-                    leftover = free_size - file_size
-                    grouped.insert(j + 1, ["." for _ in range(leftover)])
-
-                    break
-
-    return grouped
+    return files, spaces
 
 
-memory = initialize_memory(content)
-print("\nPart 2:")
-grouped_memory = group_memory(memory.copy())
-moved_memory2 = defragment_memory(grouped_memory.copy())
-flat_result = [item for group in moved_memory2 for item in group]
-# print("".join(map(str, flat_result)))
-check_sum = checksum(flat_result)
+def defragment_memory(files, spaces):
+    for i in reversed(range(len(files))):
+        file_block = files[i]
+        file_size = len(file_block)
+
+        for j, space_block in enumerate(spaces):
+            if len(space_block) >= file_size and file_block[0] > space_block[0]:
+                files[i] = space_block[:file_size]
+                spaces[j] = space_block[file_size:]
+                break
+
+    return files, spaces
+
+
+def calculate_checksum(files):
+    checksum = 0
+    for file_index, file_block in enumerate(files):
+        for position in file_block:
+            checksum += file_index * position
+    return checksum
+
+
+files, spaces = initialize_blocks(content)
+files, spaces = defragment_memory(files, spaces)
+
+check_sum = calculate_checksum(files)
+print("Part 2:")
 print("Checksum:", check_sum)
