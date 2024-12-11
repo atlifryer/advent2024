@@ -1,9 +1,14 @@
 import sys
-from math import log10
 
 content = [872027, 227, 18, 9760, 0, 4, 67716, 9245696]
 
 memo: dict = {}
+
+
+def get_digit(num):
+    if num < 10:
+        return 1
+    return get_digit(num / 10) + 1
 
 
 def count_stones(num, steps):
@@ -14,10 +19,11 @@ def count_stones(num, steps):
     if key in memo:
         return memo[key]
 
+    digits = get_digit(num)
+
     if num == 0:
         result = count_stones(1, steps - 1)
-    elif int(log10(num)) % 2 == 1:
-        digits = int(log10(num)) + 1
+    elif digits % 2 == 0:
         mid = 10 ** (digits // 2)
         left = num // mid
         right = num % mid
