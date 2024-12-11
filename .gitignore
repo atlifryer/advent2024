@@ -1,1 +1,4 @@
 ./inputs/
+.DS_Store
+.vscode/
+.mypy_cache/
