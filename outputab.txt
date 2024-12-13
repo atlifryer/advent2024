@@ -1,0 +1,4 @@
+Part 1:
+Total price of fencing: 1056
+
+Part 2:
