@@ -9,6 +9,17 @@ for line in sys.stdin.read().splitlines():
     left_numbers.append(number1)
     right_numbers.append(number2)
 
+# part 1
+similarity_total = 0
+left_numbers_p1 = left_numbers.copy()
+right_numbers_p1 = right_numbers.copy()
+for i in range(len(left_numbers_p1)):
+    similarity_total += abs(min(left_numbers_p1) - min(right_numbers_p1))
+    left_numbers_p1.remove(min(left_numbers_p1))
+    right_numbers_p1.remove(min(right_numbers_p1))
+print(similarity_total)
+
+# part 2
 similarity_total = 0
 for left_number in left_numbers:
     similarity = 0
